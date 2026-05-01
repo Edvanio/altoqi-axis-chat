@@ -1,0 +1,29 @@
+# Dados sensíveis — NUNCA commite estes arquivos
+.env
+*.pem
+*.key
+*.p12
+
+# Dados persistidos pelo Docker
+data-node/
+meili_data_v1.35.1/
+uploads/
+images/
+logs/
+ollama/
+redis/
+pgdata*/
+
+# Docker override local
+# Mantenha comentado se quiser versionar o override
+# docker-compose.override.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo

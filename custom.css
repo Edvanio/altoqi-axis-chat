@@ -1,0 +1,389 @@
+/* ==========================================================
+   AltoQi Axis — Custom Theme
+   Paleta verde AltoQi, sidebar escura, fonte Inter, bolhas de chat
+   ========================================================== */
+
+/* ---------- Google Fonts: Inter ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ---------- CSS Custom Properties (tokens semânticos) ---------- */
+:root {
+  /* Verde AltoQi primário — hsl(152, 69%, 40%) ≈ #1FAA6A */
+  --axis-primary: 152 69% 40%;
+  --axis-primary-hex: #1FAA6A;
+  --axis-primary-light: 152 69% 45%;
+
+  /* Sidebar escura (verde-petróleo) */
+  --axis-sidebar-bg: hsl(152, 25%, 18%);
+  --axis-sidebar-bg-hover: hsl(152, 25%, 22%);
+  --axis-sidebar-text: hsl(152, 15%, 85%);
+  --axis-sidebar-text-muted: hsl(152, 10%, 60%);
+
+  /* Fundo geral (quase-branco) */
+  --axis-canvas: hsl(210, 20%, 98%);
+  --axis-text: hsl(210, 25%, 15%);
+
+  /* Bolhas */
+  --axis-bubble-user: hsl(152, 69%, 40%);
+  --axis-bubble-user-text: #ffffff;
+  --axis-bubble-ai: hsl(210, 10%, 93%);
+  --axis-bubble-ai-text: hsl(210, 25%, 15%);
+
+  /* Funcional */
+  --axis-danger: hsl(0, 72%, 51%);
+  --axis-warning: hsl(35, 92%, 50%);
+  --axis-info: hsl(210, 80%, 52%);
+  --axis-success: hsl(152, 69%, 40%);
+
+  /* Raios */
+  --axis-radius-sm: 6px;
+  --axis-radius-md: 8px;
+  --axis-radius-lg: 12px;
+  --axis-radius-xl: 16px;
+}
+
+/* ---------- Tema escuro ---------- */
+.dark {
+  --axis-sidebar-bg: hsl(152, 25%, 12%);
+  --axis-sidebar-bg-hover: hsl(152, 25%, 16%);
+  --axis-sidebar-text: hsl(152, 15%, 80%);
+  --axis-sidebar-text-muted: hsl(152, 10%, 50%);
+
+  --axis-canvas: hsl(210, 20%, 10%);
+  --axis-text: hsl(152, 10%, 88%);
+
+  --axis-bubble-user: hsl(152, 69%, 42%);
+  --axis-bubble-ai: hsl(210, 8%, 24%);
+  --axis-bubble-ai-text: hsl(0, 0%, 92%);
+}
+
+/* ==========================================================
+   TIPOGRAFIA — Inter como fonte global
+   ========================================================== */
+body,
+html,
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* ==========================================================
+   SIDEBAR — fundo verde-petróleo escuro
+   (Aplica SOMENTE à sidebar/nav, não a inputs/formulários)
+   ========================================================== */
+nav[aria-label],
+[data-testid="nav-panel"],
+#sidebar,
+.nav-container {
+  background-color: var(--axis-sidebar-bg) !important;
+  color: var(--axis-sidebar-text) !important;
+}
+
+/* Hover dos itens da sidebar */
+nav a:hover,
+[data-testid="nav-panel"] a:hover,
+aside button:hover,
+aside a:hover {
+  background-color: hsla(152, 30%, 40%, 0.12) !important;
+  transition: background-color 150ms ease;
+}
+
+.dark nav a:hover,
+.dark [data-testid="nav-panel"] a:hover,
+.dark aside button:hover,
+.dark aside a:hover {
+  background-color: var(--axis-sidebar-bg-hover) !important;
+}
+
+/* Conversa ativa na sidebar */
+nav a[class*="bg-"],
+[data-testid="conversation-turn-"].active,
+a[class*="active"] {
+  background-color: hsla(152, 69%, 40%, 0.15) !important;
+  border-left: 3px solid var(--axis-primary-hex) !important;
+}
+
+/* Labels de seção (CONVERSAS, etc.) */
+nav span[class*="uppercase"],
+aside span[class*="text-xs"] {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--axis-sidebar-text-muted) !important;
+}
+
+/* ==========================================================
+   BOTÃO "NOVO CHAT" — verde primário sólido
+   ========================================================== */
+a[data-testid="nav-new-chat-button"],
+button[data-testid="nav-new-chat-button"],
+nav a[class*="new-chat"],
+nav button[class*="new-chat"] {
+  background-color: var(--axis-primary-hex) !important;
+  color: #ffffff !important;
+  border-radius: var(--axis-radius-md) !important;
+  font-weight: 600 !important;
+  transition: opacity 150ms ease;
+}
+
+a[data-testid="nav-new-chat-button"]:hover,
+button[data-testid="nav-new-chat-button"]:hover {
+  opacity: 0.9;
+}
+
+/* ==========================================================
+   ÁREA DE CHAT — fundo quase-branco / escuro
+   ========================================================== */
+main,
+[role="main"],
+.chat-container,
+div[class*="conversation-"] {
+  background-color: var(--axis-canvas) !important;
+}
+
+/* ==========================================================
+   BOLHAS DE MENSAGEM
+   ========================================================== */
+
+/* Mensagem do usuário — transparente */
+[data-testid*="user-message"],
+div[class*="agent-turn"] div[class*="user"] > div,
+.markdown.user-message,
+div[class*="bg-"] div[class*="request-"] {
+  background-color: transparent !important;
+  color: var(--axis-text) !important;
+  border-radius: var(--axis-radius-lg) !important;
+}
+
+/* Mensagem da IA — transparente */
+[data-testid*="ai-message"],
+div[class*="agent-turn"] div[class*="assistant"] > div,
+.markdown:not(.user-message),
+div[class*="bg-"] div[class*="response-"] {
+  background-color: transparent !important;
+  color: var(--axis-text) !important;
+  border-radius: var(--axis-radius-lg) !important;
+}
+
+.dark [data-testid*="user-message"],
+.dark div[class*="agent-turn"] div[class*="user"] > div,
+.dark .markdown.user-message,
+.dark div[class*="bg-"] div[class*="request-"] {
+  background-color: transparent !important;
+  color: var(--axis-text) !important;
+}
+
+.dark [data-testid*="ai-message"],
+.dark div[class*="agent-turn"] div[class*="assistant"] > div,
+.dark .markdown:not(.user-message),
+.dark div[class*="bg-"] div[class*="response-"] {
+  background-color: transparent !important;
+  color: var(--axis-text) !important;
+}
+
+/* ==========================================================
+   COMPOSER (campo de input)
+   ========================================================== */
+textarea[data-testid="text-input"],
+form[class*="composer"] textarea,
+div[class*="composer"] textarea {
+  border-radius: var(--axis-radius-lg) !important;
+  font-size: 14px !important;
+}
+
+textarea:focus,
+form[class*="composer"] textarea:focus {
+  border-color: var(--axis-primary-hex) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Container do composer — evita corte do border-radius */
+form[class*="composer"],
+div[class*="composer"],
+div[class*="input-area"],
+fieldset {
+  overflow: visible !important;
+  border-radius: var(--axis-radius-lg) !important;
+}
+
+/* ==========================================================
+   BOTÃO ENVIAR — verde
+   ========================================================== */
+button[data-testid="send-button"],
+form button[type="submit"] {
+  background-color: var(--axis-primary-hex) !important;
+  color: #ffffff !important;
+  border-radius: var(--axis-radius-md) !important;
+  transition: opacity 150ms ease;
+}
+
+button[data-testid="send-button"]:hover {
+  opacity: 0.9;
+}
+
+button[data-testid="send-button"]:disabled {
+  opacity: 0.4 !important;
+}
+
+/* ==========================================================
+   CARDS DE AGENTE — borda sutil, sombra no hover
+   ========================================================== */
+div[class*="agent-card"],
+div[class*="card"] {
+  border-radius: var(--axis-radius-lg) !important;
+  border: 1px solid hsl(210, 15%, 88%) !important;
+  transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+div[class*="agent-card"]:hover,
+div[class*="card"]:hover {
+  box-shadow: 0 4px 12px hsla(210, 15%, 40%, 0.1) !important;
+  transform: translateY(-1px);
+}
+
+.dark div[class*="agent-card"],
+.dark div[class*="card"] {
+  border-color: hsl(210, 10%, 25%) !important;
+}
+
+/* ==========================================================
+   FOCO DE TECLADO — ring verde
+   ========================================================== */
+*:focus-visible {
+  outline: 2px solid var(--axis-primary-hex) !important;
+  outline-offset: 2px !important;
+}
+
+/* ==========================================================
+   LOADING (três pontos) — animação pulsante verde
+   ========================================================== */
+@keyframes axisPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+div[class*="loading"] span,
+div[class*="typing"] span,
+.dot-pulse {
+  background-color: var(--axis-primary-hex) !important;
+  animation: axisPulse 1.4s ease-in-out infinite !important;
+}
+
+div[class*="loading"] span:nth-child(2),
+div[class*="typing"] span:nth-child(2) {
+  animation-delay: 0.2s !important;
+}
+
+div[class*="loading"] span:nth-child(3),
+div[class*="typing"] span:nth-child(3) {
+  animation-delay: 0.4s !important;
+}
+
+/* ==========================================================
+   BADGES DE STATUS
+   ========================================================== */
+span[class*="connected"],
+span[class*="success"] {
+  color: var(--axis-primary-hex) !important;
+}
+
+span[class*="warning"],
+span[class*="ask"] {
+  color: hsl(35, 92%, 50%) !important;
+}
+
+span[class*="error"],
+span[class*="blocked"],
+span[class*="destructive"] {
+  color: var(--axis-danger) !important;
+}
+
+/* ==========================================================
+   MICROINTERAÇÕES — transições suaves globais
+   ========================================================== */
+button,
+a,
+input,
+textarea,
+select {
+  transition: background-color 150ms ease,
+              color 150ms ease,
+              opacity 150ms ease,
+              border-color 150ms ease !important;
+}
+
+/* ==========================================================
+   MENUS CONTEXTUAIS / POPOVERS
+   ========================================================== */
+[role="menu"],
+[data-radix-popper-content-wrapper] div,
+div[class*="popover"] {
+  border-radius: var(--axis-radius-md) !important;
+  box-shadow: 0 4px 16px hsla(210, 15%, 20%, 0.12) !important;
+  border: 1px solid hsl(210, 15%, 88%) !important;
+}
+
+.dark [role="menu"],
+.dark [data-radix-popper-content-wrapper] div,
+.dark div[class*="popover"] {
+  border-color: hsl(210, 10%, 25%) !important;
+  box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.3) !important;
+}
+
+/* Item destrutivo (Excluir) em vermelho */
+[role="menuitem"][class*="destructive"],
+[role="menuitem"][class*="delete"],
+[role="menuitem"][class*="danger"] {
+  color: var(--axis-danger) !important;
+}
+
+/* ==========================================================
+   TELA DE LOGIN — reforço verde
+   ========================================================== */
+button[class*="social"],
+a[class*="social"] {
+  border-radius: var(--axis-radius-md) !important;
+}
+
+/* ==========================================================
+   LARGURA MÁXIMA DAS MENSAGENS (~768px, bolhas 80%)
+   ========================================================== */
+div[class*="message-content"],
+div[class*="markdown"] {
+  max-width: min(768px, 80%) !important;
+}
+
+/* ==========================================================
+   SIDEBAR — preferir expandida por padrão (tooltip nos ícones)
+   Nota: O LibreChat permite expandir clicando no 1º ícone.
+   Forçar via CSS não é ideal; o estado é salvo no localStorage.
+   ========================================================== */
+
+/* ==========================================================
+   RODAPÉ — ocultar link do LibreChat, manter texto da tradução
+   ========================================================== */
+a[href*="librechat.ai"],
+a[href*="github.com/danny-avila"] {
+  display: none !important;
+}
+
+/* ==========================================================
+   SCROLLBAR CUSTOM (sutil)
+   ========================================================== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(152, 20%, 40%, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(152, 20%, 40%, 0.5);
+}

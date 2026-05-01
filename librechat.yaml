@@ -1,0 +1,192 @@
+# librechat.yaml
+# Configuração principal do LibreChat
+# Documentação: https://www.librechat.ai/docs/configuration/librechat_yaml
+# Validador YAML: https://www.librechat.ai/toolkit/yaml_checker
+
+version: 1.3.9
+
+cache: true
+
+# ==============================================================
+# Interface (customização do título e cabeçalho)
+# ==============================================================
+interface:
+  # Título exibido na aba do navegador
+  appTitle: "AltoQi Axis"
+  # Habilita seletor de modelos
+  modelSelect: true
+  # Habilita parâmetros de configuração
+  parameters: true
+  # Habilita a barra lateral
+  sidePanel: true
+  # Habilita histórico de conversas
+  conversationHistory: true
+  # Mensagem de boas-vindas personalizada
+  customWelcome: "Olá {{user.name}}! Bem-vindo ao AltoQi Axis"
+  # Habilita agentes com CRUD completo
+  agents:
+    use: true
+    create: true
+    share: true
+    public: true
+  # Habilita marketplace de agentes (cards na tela inicial)
+  marketplace:
+    use: true
+  # Habilita MCP servers
+  mcpServers:
+    use: true
+    create: true
+    share: false
+    public: false
+
+# ==============================================================
+# Configuração de registro e login
+# ==============================================================
+registration:
+  socialLogins:
+    - openid
+
+# ==============================================================
+# MCP Servers — ferramentas disponíveis no chat e nos agentes
+# Documentação: https://www.librechat.ai/docs/features/mcp
+# ==============================================================
+mcpServers:
+
+  # ==============================================================
+  # VisusCost MCP — token injetado automaticamente da sessão OIDC
+  # O usuário só precisa estar logado com conta AltoQi
+  # ==============================================================
+  visuscost:
+    title: "Visus Cost Management"
+    description: "Consulta orçamentos, custos e composições de preço do Visus"
+    type: sse
+    url: "https://mcp-dev.altoqi.com.br/mcp"
+    initTimeout: 150000
+    timeout: 120000
+    startup: false
+    headers:
+      Authorization: "Bearer {{LIBRECHAT_OPENID_ACCESS_TOKEN}}"
+
+  # ==============================================================
+  # Visus Workflow MCP — gestão de tarefas, prazos e horas
+  # ==============================================================
+  workflow:
+    title: "Visus Workflow"
+    description: "Gestão de tarefas, prazos, horas e acompanhamento de projetos"
+    type: sse
+    url: "https://workflow-api-dev.altoqivisus.com.br/mcp"
+    initTimeout: 150000
+    timeout: 120000
+    startup: false
+    headers:
+      Authorization: "Bearer {{LIBRECHAT_OPENID_ACCESS_TOKEN}}"
+
+
+
+  # GitHub — requer token do usuário (PAT)
+  # github:
+  #   type: streamable-http
+  #   url: "https://api.githubcopilot.com/mcp/"
+  #   headers:
+  #     Authorization: "{{GITHUB_PAT}}"
+  #   customUserVars:
+  #     GITHUB_PAT:
+  #       title: "GitHub Personal Access Token"
+  #       description: "Gere em https://github.com/settings/tokens (escopos: repo, read:org)"
+  #   startup: false
+
+# ==============================================================
+# Endpoints de IA — modelos disponíveis
+# ==============================================================
+endpoints:
+  openAI:
+    # Apenas modelos principais (evita poluir a lista)
+    models:
+      default:
+        - "gpt-4.1"
+        - "gpt-4.1-mini"
+        - "gpt-4.1-nano"
+        - "gpt-4o"
+        - "gpt-4o-mini"
+        - "o3"
+        - "o3-mini"
+        - "o4-mini"
+      fetch: false
+    titleModel: "gpt-4o-mini"
+    modelDisplayLabel: "OpenAI"
+
+  google:
+    models:
+      - "gemini-2.5-pro"
+      - "gemini-2.5-flash"
+      - "gemini-2.0-flash"
+
+  anthropic:
+    models:
+      - "claude-sonnet-4-20250514"
+      - "claude-3-7-sonnet-20250219"
+      - "claude-3-5-haiku-20241022"
+
+# ==============================================================
+# Endpoints de IA personalizados
+# Descomente e configure os endpoints que deseja usar
+# ==============================================================
+# endpoints:
+#   custom:
+#     # ---------- Ollama (modelos locais) ----------
+#     - name: "Ollama"
+#       apiKey: "ollama"
+#       baseURL: "http://host.docker.internal:11434/v1/"
+#       models:
+#         default: ["llama3.2", "llama3.1", "mistral", "gemma2"]
+#         fetch: true
+#       titleConvo: true
+#       titleModel: "current_model"
+#       summarize: false
+#       forcePrompt: false
+#       modelDisplayLabel: "Ollama"
+#
+#     # ---------- OpenRouter ----------
+#     - name: "OpenRouter"
+#       apiKey: "${OPENROUTER_KEY}"
+#       baseURL: "https://openrouter.ai/api/v1"
+#       models:
+#         default:
+#           - "openai/gpt-4o"
+#           - "anthropic/claude-3.5-sonnet"
+#           - "google/gemini-2.0-flash"
+#           - "meta-llama/llama-3.3-70b-instruct"
+#           - "deepseek/deepseek-chat"
+#         fetch: true
+#       titleConvo: true
+#       titleModel: "openai/gpt-4o-mini"
+#       modelDisplayLabel: "OpenRouter"
+#       dropParams: ["stop"]
+#
+#     # ---------- Groq ----------
+#     - name: "Groq"
+#       apiKey: "${GROQ_API_KEY}"
+#       baseURL: "https://api.groq.com/openai/v1/"
+#       models:
+#         default:
+#           - "llama-3.3-70b-versatile"
+#           - "llama-3.1-8b-instant"
+#           - "gemma2-9b-it"
+#           - "mixtral-8x7b-32768"
+#         fetch: false
+#       titleConvo: true
+#       titleModel: "llama-3.1-8b-instant"
+#       modelDisplayLabel: "Groq"
+#
+#     # ---------- DeepSeek ----------
+#     - name: "DeepSeek"
+#       apiKey: "${DEEPSEEK_API_KEY}"
+#       baseURL: "https://api.deepseek.com/v1"
+#       models:
+#         default:
+#           - "deepseek-chat"
+#           - "deepseek-reasoner"
+#         fetch: false
+#       titleConvo: true
+#       titleModel: "deepseek-chat"
+#       modelDisplayLabel: "DeepSeek"

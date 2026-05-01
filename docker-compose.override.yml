@@ -1,0 +1,92 @@
+# docker-compose.override.yml
+# Use este arquivo para customizações locais sem alterar o docker-compose.yml principal.
+# Documentação: https://www.librechat.ai/docs/configuration/docker_override
+
+services:
+  api:
+    # Usa a imagem customizada (com librechat.yaml + logo + patch OIDC)
+    image: edvanio/axis-librechat:latest
+    environment:
+      - ALLOW_SOCIAL_LOGIN=true
+      - ALLOW_SOCIAL_REGISTRATION=true
+      - OPENID_CLIENT_ID=altoqi-hub
+      - OPENID_CLIENT_SECRET=pkce-public-client
+      - OPENID_ISSUER=https://api.keysandbox.altoqi.com.br/realms/QIAuth
+      - OPENID_SESSION_SECRET=axis-openid-session-secret-change-me
+      - OPENID_SCOPE=openid profile email
+      - OPENID_CALLBACK_URL=/oauth/openid/callback
+      - OPENID_USE_PKCE=true
+      - OPENID_REUSE_TOKENS=true
+      - OPENID_BUTTON_LABEL=Entrar com AltoQi
+      - OPENID_IMAGE_URL=/images/logo.png
+      - OPENID_USERNAME_CLAIM=preferred_username
+      - OPENID_NAME_CLAIM=name
+      - OPENID_EMAIL_CLAIM=email
+    # Monta o arquivo de configuração librechat.yaml e o logo customizado
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+      - type: bind
+        source: ./images/logo.svg
+        target: /app/client/public/assets/logo.svg
+      - type: bind
+        source: ./images/logo.svg
+        target: /app/client/dist/assets/logo.svg
+      - type: bind
+        source: ./patches/translation-pt-BR.json
+        target: /app/client/src/locales/pt-BR/translation.json
+      - type: bind
+        source: ./custom.css
+        target: /app/client/dist/assets/custom.css
+      - type: bind
+        source: ./custom.css
+        target: /app/client/public/assets/custom.css
+    # Patch: substitui textos no bundle compilado antes de iniciar
+    command: >
+      sh -c "
+        sed -i 's/Bem-vindo de volta/Bem-vindo/g' /app/client/dist/assets/locales.*.js &&
+        sed -i 's/Toda IA para Todos\./AltoQi Axis/g' /app/client/dist/assets/locales.*.js &&
+        npm run backend
+      "
+
+  # Descomente abaixo para alterar a porta padrão (ex: se 3080 já estiver em uso)
+  # api:
+  #   ports:
+  #     - "3081:3080"
+
+  # Descomente para usar MongoDB 4.4 (CPUs sem suporte a AVX — Apple M-series, algumas VMs)
+  # mongodb:
+  #   image: mongo:4.4.18
+
+  # Descomente para expor o MongoDB externamente (use com cuidado!)
+  # mongodb:
+  #   ports:
+  #     - "27018:27017"
+
+  # Descomente para desabilitar o MeiliSearch
+  # meilisearch:
+  #   profiles:
+  #     - donotstart
+
+  # Descomente para adicionar mongo-express (interface web para o MongoDB)
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: mongo-express
+  #   environment:
+  #     ME_CONFIG_MONGODB_SERVER: mongodb
+  #     ME_CONFIG_BASICAUTH_USERNAME: admin
+  #     ME_CONFIG_BASICAUTH_PASSWORD: password
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - mongodb
+  #   restart: always
+
+  # Descomente para adicionar Ollama (modelos locais)
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ./ollama:/root/.ollama
