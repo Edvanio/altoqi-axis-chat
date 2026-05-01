@@ -1,12 +1,13 @@
 # Dockerfile customizado do ChatAxis
-# Estende a imagem oficial do LibreChat e injeta:
-#   - librechat.yaml (configuração compartilhada com MCP visuscost)
-#   - logo.svg customizado (Axis)
+# Estende o LibreChat-Fork (fonte local) e injeta customizações AltoQi.
+#
+# Pré-requisito: buildar a imagem do fork antes:
+#   docker build -t axis-librechat-base:latest ./LibreChat-Fork
 #
 # Build:  docker build -t edvanio/axis-librechat:latest .
 # Push:   docker push edvanio/axis-librechat:latest
 
-FROM registry.librechat.ai/danny-avila/librechat-dev:latest
+FROM axis-librechat-base:latest
 
 # Configuração principal (interface, MCP visuscost, etc.)
 COPY librechat.yaml /app/librechat.yaml

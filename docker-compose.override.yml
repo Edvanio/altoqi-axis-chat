@@ -1,10 +1,16 @@
 # docker-compose.override.yml
 # Use este arquivo para customizações locais sem alterar o docker-compose.yml principal.
 # Documentação: https://www.librechat.ai/docs/configuration/docker_override
+#
+# Fluxo de build com fork local:
+#   1. docker build -t axis-librechat-base:latest ./LibreChat-Fork
+#   2. docker build -t edvanio/axis-librechat:latest .
+#   3. docker compose up -d
 
 services:
   api:
     # Usa a imagem customizada (com librechat.yaml + logo + patch OIDC)
+    # Baseada no LibreChat-Fork local — rode os builds acima antes de subir
     image: edvanio/axis-librechat:latest
     environment:
       - ALLOW_SOCIAL_LOGIN=true

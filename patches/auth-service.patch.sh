@@ -25,7 +25,7 @@ fi
 node -e "
 const fs=require('fs');
 const f='$FILE';
-let s=fs.readFileSync(f,'utf8');
+let s=fs.readFileSync(f,'utf8').replace(/\r\n/g,'\n');
 const before=\`    if (!refreshToken) {
       logger.error('[setOpenIDAuthTokens] No refresh token available');
       return;
