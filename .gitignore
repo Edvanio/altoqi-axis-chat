@@ -19,6 +19,9 @@ pgdata*/
 # Mantenha comentado se quiser versionar o override
 # docker-compose.override.yml
 
+# Fork do LibreChat (repositório separado dentro da pasta)
+LibreChat-Fork/
+
 # OS
 .DS_Store
 Thumbs.db
