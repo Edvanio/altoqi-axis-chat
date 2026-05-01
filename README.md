@@ -1,6 +1,43 @@
-# ChatAxis — LibreChat com Docker
+# AltoQi Axis — LibreChat Customizado
 
-Plataforma de chat com IA baseada no [LibreChat](https://librechat.ai), rodando via Docker Compose.
+Plataforma de chat com IA baseada no [LibreChat](https://librechat.ai), customizada com tema AltoQi, MCPs e autenticação OIDC/Keycloak.
+
+---
+
+## Repositórios
+
+| Repositório | Descrição |
+|-------------|-----------|
+| [altoqi-axis-chat](https://github.com/Edvanio/altoqi-axis-chat) | Este projeto — config, tema, deploy |
+| [-librechat-fork](https://github.com/Edvanio/-librechat-fork) | Fork do LibreChat (código-fonte) |
+
+---
+
+## Arquitetura
+
+```
+LibreChat-Fork/ (fonte)
+    └─ docker build → axis-librechat-base:latest
+                            └─ Dockerfile (ChatAxis)
+                                    └─ docker build → edvanio/axis-librechat:latest
+                                                            └─ docker compose up → Container
+```
+
+**Princípio:** Toda customização possível deve ser feita **neste repo (ChatAxis)** — sem mexer no fork. O fork (`LibreChat-Fork/`) é alterado apenas para mudanças profundas no código-fonte do LibreChat que não são possíveis por configuração externa.
+
+---
+
+## O que fica em cada lugar
+
+| O que customizar | Onde alterar | Precisa de rebuild? |
+|---|---|---|
+| Endpoints de IA, MCPs, interface | `librechat.yaml` | Não (volume) |
+| Tema visual, cores, layout | `custom.css` | Não (volume) |
+| Variáveis de ambiente, chaves de API | `.env` | Não (restart) |
+| Logo, favicon | `images/` + `Dockerfile` | Sim (ChatAxis) |
+| Patch OIDC, injeções no HTML | `Dockerfile` | Sim (ChatAxis) |
+| Tradução pt-BR | `patches/translation-pt-BR.json` | Não (volume) |
+| Lógica de backend/frontend | `LibreChat-Fork/` | Sim (fork + ChatAxis) |
 
 ---
 
@@ -17,8 +54,14 @@ Plataforma de chat com IA baseada no [LibreChat](https://librechat.ai), rodando 
 07-ChatAxis/
 ├── docker-compose.yml           # Serviços principais (não editar)
 ├── docker-compose.override.yml  # Customizações locais
-├── .env                         # Variáveis de ambiente e chaves de API
-├── librechat.yaml               # Configuração de endpoints de IA
+├── Dockerfile                   # Build da imagem customizada AltoQi
+├── .env                         # Variáveis de ambiente locais (não versionado)
+├── .envcopy                     # Template do .env para produção (não versionado)
+├── librechat.yaml               # Configuração de endpoints, MCPs e interface
+├── custom.css                   # Tema visual AltoQi Axis
+├── images/                      # Logo SVG e PNG
+├── patches/                     # Patch de auth OIDC e tradução pt-BR
+├── LibreChat-Fork/              # Fork do fonte (ignorado pelo git deste repo)
 ├── .gitignore
 └── README.md
 ```
@@ -45,17 +88,35 @@ Descomente e ajuste os blocos de endpoints (Ollama, OpenRouter, Groq, DeepSeek, 
 
 ---
 
-## Subindo o projeto
+## Subindo o projeto (primeira vez)
+
+```powershell
+# 1. Buildar a imagem base do fork (demora ~10 min)
+docker build -t axis-librechat-base:latest .\LibreChat-Fork
+
+# 2. Buildar a imagem customizada AltoQi
+docker build -t edvanio/axis-librechat:latest .
+
+# 3. Subir os containers
+docker compose up -d
+```
+
+Acesse: **http://localhost:3080**
+
+---
+
+## Subindo o projeto (uso cotidiano)
+
+Após o primeiro build, basta:
 
 ```powershell
 docker compose up -d
 ```
 
-Na primeira execução, as imagens serão baixadas (pode demorar alguns minutos).
-
-Acesse: **http://localhost:3080**
-
-> A primeira conta registrada se torna administradora.
+Se alterou apenas `custom.css` ou `librechat.yaml`:
+```powershell
+docker compose restart api
+```
 
 ---
 
@@ -65,9 +126,33 @@ Acesse: **http://localhost:3080**
 |------|---------|
 | Subir serviços | `docker compose up -d` |
 | Parar serviços | `docker compose down` |
+| Reiniciar o servidor | `docker compose restart api` |
 | Ver logs | `docker compose logs -f api` |
-| Ver todos os logs | `docker compose logs -f` |
-| Reiniciar | `docker compose down && docker compose up -d` |
+
+---
+
+## Rebuild após alterações
+
+### Alterou `custom.css` ou `librechat.yaml`
+Sem rebuild — basta reiniciar:
+```powershell
+docker compose restart api
+```
+
+### Alterou logo, Dockerfile ou patch de auth
+Rebuilda apenas a imagem do ChatAxis:
+```powershell
+docker build -t edvanio/axis-librechat:latest .
+docker compose up -d
+```
+
+### Alterou o código-fonte no `LibreChat-Fork/`
+Rebuilda o fork e depois o ChatAxis:
+```powershell
+docker build -t axis-librechat-base:latest .\LibreChat-Fork
+docker build -t edvanio/axis-librechat:latest .
+docker compose up -d
+```
 
 ---
 
