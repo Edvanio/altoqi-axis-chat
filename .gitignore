@@ -1,6 +1,5 @@
 # Dados sensíveis — NUNCA commite estes arquivos
-.env
-.envcopy
+
 *.pem
 *.key
 *.p12
