@@ -31,3 +31,7 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+/remix-of-interface-altoqi-axis-main
+.github/agents/
+.github/prompts/
+.github/AGENTS.md

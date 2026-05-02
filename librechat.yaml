@@ -14,7 +14,7 @@ interface:
   # Título exibido na aba do navegador
   appTitle: "AltoQi Axis"
   # Rodapé personalizado — vazio remove o link padrão do LibreChat
-  customFooter: " "
+  customFooter: "AltoQi Axis — Inteligência artificial para engenharia"
   # Habilita seletor de modelos
   modelSelect: true
   # Habilita parâmetros de configuração
@@ -80,8 +80,6 @@ mcpServers:
     initTimeout: 150000
     timeout: 120000
     startup: false
-    headers:
-      Authorization: "Bearer {{LIBRECHAT_OPENID_ACCESS_TOKEN}}"
 
 
 
@@ -102,17 +100,15 @@ mcpServers:
 # ==============================================================
 endpoints:
   openAI:
-    # Apenas modelos principais (evita poluir a lista)
+    # Lista reduzida para uso por engenheiros — sem variantes técnicas
     models:
       default:
-        - "gpt-4.1"
-        - "gpt-4.1-mini"
-        - "gpt-4.1-nano"
-        - "gpt-4o"
+        - "gpt-3.5-turbo"
         - "gpt-4o-mini"
-        - "o3"
-        - "o3-mini"
-        - "o4-mini"
+        - "gpt-4o"
+        - "gpt-5"
+        - "gpt-5.3"
+        - "gpt-5.4"
       fetch: false
     titleModel: "gpt-4o-mini"
     modelDisplayLabel: "OpenAI"

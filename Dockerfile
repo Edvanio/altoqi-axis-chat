@@ -29,6 +29,9 @@ COPY custom.css /app/client/public/assets/custom.css
 
 # Gerar favicon PNGs (32x32, 16x16, 180x180) a partir do logo.png usando sharp
 COPY images/logo.png /tmp/logo-src.png
+USER root
+RUN chmod -R a+w /app/client/dist/assets /app/client/public/assets 2>/dev/null || true
+USER node
 RUN node -e " \
 const sharp = require('sharp'); \
 const tasks = [ \

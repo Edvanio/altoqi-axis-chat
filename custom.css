@@ -65,29 +65,20 @@ body, html, * {
    BLOCO 1 - SIDEBAR
    ========================================================== */
 
-/* 1a. Icon strip - contem botao close/open */
-div:has(> button[data-testid="close-sidebar-button"]),
-div:has(> button[data-testid="open-sidebar-button"]) {
+/* 1a. Sidebar container (aside no desktop, div.fixed no mobile) */
+aside:has(button[data-testid="close-sidebar-button"]) > div,
+aside:has(button[data-testid="open-sidebar-button"]) > div,
+div.fixed:has(button[data-testid="close-sidebar-button"]) > div,
+div.fixed:has(button[data-testid="open-sidebar-button"]) > div {
   background-color: var(--axis-sidebar-bg) !important;
   border-right-color: var(--axis-sidebar-border) !important;
-  --text-primary:        var(--axis-sidebar-text);
-  --text-secondary:      var(--axis-sidebar-muted);
-  --surface-active-alt:  var(--axis-sidebar-active);
-  --surface-hover:       var(--axis-sidebar-hover);
-  --surface-active:      var(--axis-sidebar-active);
-  --border-light:        var(--axis-sidebar-border);
-}
-
-/* 1b. Painel de navegacao (nav irmao do icon strip) */
-div:has(> div > button[data-testid="close-sidebar-button"]) > nav,
-div:has(> div > button[data-testid="open-sidebar-button"]) > nav {
-  background-color: var(--axis-sidebar-bg) !important;
-  --text-primary:        var(--axis-sidebar-text);
-  --text-secondary:      var(--axis-sidebar-muted);
-  --surface-active-alt:  var(--axis-sidebar-active);
-  --surface-hover:       var(--axis-sidebar-hover);
-  --surface-active:      var(--axis-sidebar-active);
-  --border-light:        var(--axis-sidebar-border);
+  --text-primary:          var(--axis-sidebar-text);
+  --text-secondary:        var(--axis-sidebar-muted);
+  --surface-primary-alt:   var(--axis-sidebar-bg);
+  --surface-active-alt:    var(--axis-sidebar-active);
+  --surface-hover:         var(--axis-sidebar-hover);
+  --surface-active:        var(--axis-sidebar-active);
+  --border-light:          var(--axis-sidebar-border);
 }
 
 /* 1c. Botao "Novo Chat" - verde primario solido */
@@ -104,8 +95,8 @@ a[data-testid="new-chat-button"] svg {
 }
 
 /* 1d. Conversa ativa - accent verde a esquerda */
-div:has(> div > button[data-testid="close-sidebar-button"]) > nav [aria-current="page"],
-div:has(> div > button[data-testid="open-sidebar-button"]) > nav [aria-current="page"] {
+aside:has(button[data-testid="close-sidebar-button"]) [aria-current="page"],
+aside:has(button[data-testid="open-sidebar-button"]) [aria-current="page"] {
   border-left: 3px solid var(--axis-primary-hex) !important;
   border-radius: 0 var(--axis-r-md) var(--axis-r-md) 0 !important;
 }
@@ -126,37 +117,58 @@ div[role="region"] p[class*="text-xs"][class*="font-semibold"] {
 }
 
 /* 1g. Scrollbar fina na sidebar */
-div:has(> div > button[data-testid="close-sidebar-button"]) ::-webkit-scrollbar,
-div:has(> div > button[data-testid="open-sidebar-button"]) ::-webkit-scrollbar {
+aside:has(button[data-testid="close-sidebar-button"]) ::-webkit-scrollbar,
+aside:has(button[data-testid="open-sidebar-button"]) ::-webkit-scrollbar {
   width: 3px;
+}
+
+/* 1h. Remover botao de favoritos da sidebar (bookmark-menu) */
+button[data-testid="bookmark-menu"] {
+  display: none !important;
+}
+
+/* 1i. Gradiente de fade nos itens de conversa — substituir branco pela cor da sidebar */
+aside [aria-hidden="true"].bg-gradient-to-l {
+  --tw-gradient-from: var(--axis-sidebar-bg) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), transparent !important;
+}
+aside [aria-hidden="true"].bg-gradient-to-l.group-hover\:from-surface-active-alt,
+aside .group:hover [aria-hidden="true"].bg-gradient-to-l {
+  --tw-gradient-from: var(--axis-sidebar-hover) !important;
 }
 
 /* ==========================================================
    BLOCO 4 - TOPBAR / HEADER
    ========================================================== */
 
-/* Remove gradiente, usa fundo solido + borda */
-.bg-gradient-to-b.from-presentation.to-transparent {
-  background: white !important;
-  background-image: none !important;
-  border-bottom: 1px solid var(--gray-200) !important;
-  backdrop-filter: none !important;
+/* Model selector pill — fundo branco no claro, transparente+borda no escuro */
+html.light button.h-9.rounded-xl {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #111827 !important;
+}
+html.light button.h-9.rounded-xl:hover {
+  background-color: #f3f4f6 !important;
+}
+html.dark button.h-9.rounded-xl {
+  background-color: transparent !important;
 }
 
-.dark .bg-gradient-to-b.from-presentation.to-transparent {
-  background: var(--gray-800) !important;
-  background-image: none !important;
-  border-bottom-color: var(--gray-700) !important;
+/* Botoes de icone do header (size-9) — fundo branco no claro, transparente no escuro */
+html.light button.size-9.rounded-xl {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.10) !important;
+  color: #374151 !important;
 }
-
-/* Model selector - borda sutil + radius */
-button[id*="endpoint-menu"],
-button[id*="model-select"],
-[class*="ModelSelector"] > button:first-child {
-  border: 1px solid var(--border-light) !important;
-  border-radius: var(--axis-r-md) !important;
-  font-size: 13px !important;
-  font-weight: 500 !important;
+html.light button.size-9.rounded-xl:hover {
+  background-color: #f3f4f6 !important;
+}
+html.dark button.size-9.rounded-xl {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+html.dark button.size-9.rounded-xl:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* ==========================================================
@@ -218,8 +230,8 @@ div[class*="rounded-3xl"][class*="border"] {
 }
 div[class*="rounded-t-3xl"][class*="border"]:focus-within,
 div[class*="rounded-3xl"][class*="border"]:focus-within {
-  border-color: hsla(152, 69%, 40%, 0.4) !important;
-  box-shadow: 0 0 0 3px hsla(152, 69%, 40%, 0.06) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Placeholder do textarea */
@@ -229,24 +241,53 @@ form textarea::placeholder {
 }
 
 /* ==========================================================
-   BLOCO 5 - CARDS DE AGENTES (Marketplace)
+   BLOCO 5 - CARDS DE AGENTES (Marketplace / Landing)
+   Referencia: remix layout vertical — icone no topo, texto abaixo
    ========================================================== */
 
-/* Card: fundo branco, borda sutil, hover shadow */
+/* Card: layout VERTICAL, fundo branco, borda sutil, hover shadow */
 .group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] {
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 1.25rem !important;
+  gap: 0.75rem !important;
   background-color: #ffffff !important;
   border: 1px solid var(--border-light) !important;
   border-radius: var(--axis-r-lg) !important;
   transition: box-shadow 150ms ease, border-color 150ms ease, transform 150ms ease !important;
 }
 .dark .group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] {
-  background-color: var(--gray-800) !important;
-  border-color: var(--gray-700) !important;
+  background-color: hsl(210, 11%, 13%) !important;
+  border-color: hsl(210, 11%, 20%) !important;
 }
 .group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"]:hover {
   box-shadow: 0 4px 14px hsla(152, 40%, 20%, 0.12) !important;
   border-color: hsla(152, 69%, 40%, 0.3) !important;
   transform: translateY(-1px);
+}
+
+/* Avatar: alinha no topo (nao centralizado) */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] > div.flex-shrink-0 {
+  align-self: flex-start !important;
+}
+
+/* Content wrapper: remove flex-1 e justify-center do modo horizontal */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] > div.flex-1 {
+  flex: 0 1 auto !important;
+  justify-content: flex-start !important;
+}
+
+/* Nome do agente: menor como no remix (text-sm font-semibold) */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] [class*="text-base"][class*="font-semibold"],
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] [class*="md:text-lg"] {
+  font-size: 0.875rem !important;
+}
+
+/* Descricao: text-xs como no remix */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] [class*="line-clamp"][class*="text-sm"] {
+  font-size: 0.75rem !important;
+  line-height: 1.5 !important;
 }
 
 /* Badge de categoria - verde sutil */
@@ -308,9 +349,34 @@ button[data-testid="send-button"] svg {
 /* ==========================================================
    FOCO
    ========================================================== */
+/* Outline de foco — exceto em areas de scroll/chat principal */
 *:focus-visible {
   outline: 2px solid var(--axis-primary-hex) !important;
   outline-offset: 2px !important;
+}
+main:focus-visible,
+[role="main"]:focus-visible,
+.overflow-y-auto:focus-visible,
+.overflow-auto:focus-visible {
+  outline: none !important;
+}
+
+/* Remove linha fantasma vertical no chat */
+[class*="flex-col"][class*="h-full"] > [class*="border-l"],
+[class*="flex-col"][class*="h-full"] > [class*="border-r"],
+.transition-all[style*="border"],
+.relative[style*="width"][style*="border"] {
+  border-color: transparent !important;
+}
+
+/* Remove quadrado verde (outline/border) no textarea do chat */
+textarea:focus,
+textarea:focus-visible,
+div:has(> textarea):focus-within,
+.rounded-t-3xl:focus-within,
+.rounded-3xl:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ==========================================================

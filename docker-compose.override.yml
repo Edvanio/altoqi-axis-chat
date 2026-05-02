@@ -48,13 +48,8 @@ services:
       - type: bind
         source: ./custom.css
         target: /app/client/public/assets/custom.css
-    # Patch: substitui textos no bundle compilado antes de iniciar
-    command: >
-      sh -c "
-        sed -i 's/Bem-vindo de volta/Bem-vindo/g' /app/client/dist/assets/locales.*.js &&
-        sed -i 's/Toda IA para Todos\./AltoQi Axis/g' /app/client/dist/assets/locales.*.js &&
-        npm run backend
-      "
+    # Inicia o backend diretamente (traduções já corrigidas no build)
+    command: npm run backend
 
   # Descomente abaixo para alterar a porta padrão (ex: se 3080 já estiver em uso)
   # api:
