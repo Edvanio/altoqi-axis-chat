@@ -1,0 +1,4 @@
+[submodule "spec_to_code"]
+	path = spec_to_code
+	url = https://github.com/AltoQiTec/spec_to_code.git
+	branch = main
