@@ -13,6 +13,8 @@ cache: true
 interface:
   # Título exibido na aba do navegador
   appTitle: "AltoQi Axis"
+  # Rodapé personalizado — vazio remove o link padrão do LibreChat
+  customFooter: " "
   # Habilita seletor de modelos
   modelSelect: true
   # Habilita parâmetros de configuração
@@ -22,17 +24,17 @@ interface:
   # Habilita histórico de conversas
   conversationHistory: true
   # Mensagem de boas-vindas personalizada
-  customWelcome: "Olá {{user.name}}! Bem-vindo ao AltoQi Axis"
-  # Habilita agentes com CRUD completo
+  customWelcome: "Olá, {{user.name}}! Bem-vindo ao AltoQi Axis"
+  # Agentes: usuários podem usar e criar; compartilhamento apenas público (admin configura no painel)
   agents:
     use: true
     create: true
-    share: true
-    public: true
+    share: false
+    public: false
   # Habilita marketplace de agentes (cards na tela inicial)
   marketplace:
     use: true
-  # Habilita MCP servers
+  # MCP servers: usuários usam os conectores existentes; criação livre por ora
   mcpServers:
     use: true
     create: true

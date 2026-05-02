@@ -1,254 +1,312 @@
-/* ==========================================================
-   AltoQi Axis — Custom Theme
-   Paleta verde AltoQi, sidebar escura, fonte Inter, bolhas de chat
+﻿/* ==========================================================
+   AltoQi Axis — Custom Theme v2
+   Paleta verde AltoQi, sidebar verde-petróleo, tipografia Inter
+   Referência visual: remix-of-interface-altoqi-axis-main
    ========================================================== */
 
 /* ---------- Google Fonts: Inter ---------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* ---------- CSS Custom Properties (tokens semânticos) ---------- */
+/* ==========================================================
+   TOKENS SEMANTICOS
+   ========================================================== */
 :root {
-  /* Verde AltoQi primário — hsl(152, 69%, 40%) ≈ #1FAA6A */
-  --axis-primary: 152 69% 40%;
-  --axis-primary-hex: #1FAA6A;
-  --axis-primary-light: 152 69% 45%;
+  --axis-primary:         hsl(152, 69%, 40%);
+  --axis-primary-hex:     #1FAA6A;
+  --axis-primary-light:   hsl(152, 69%, 45%);
 
-  /* Sidebar escura (verde-petróleo) */
-  --axis-sidebar-bg: hsl(152, 25%, 18%);
-  --axis-sidebar-bg-hover: hsl(152, 25%, 22%);
-  --axis-sidebar-text: hsl(152, 15%, 85%);
-  --axis-sidebar-text-muted: hsl(152, 10%, 60%);
+  --axis-sidebar-bg:      hsl(152, 25%, 18%);
+  --axis-sidebar-hover:   hsl(152, 25%, 22%);
+  --axis-sidebar-active:  hsl(152, 25%, 26%);
+  --axis-sidebar-text:    hsl(152, 15%, 85%);
+  --axis-sidebar-muted:   hsl(152, 10%, 60%);
+  --axis-sidebar-border:  hsla(152, 30%, 30%, 0.35);
 
-  /* Fundo geral (quase-branco) */
-  --axis-canvas: hsl(210, 20%, 98%);
-  --axis-text: hsl(210, 25%, 15%);
+  --axis-canvas:          hsl(210, 20%, 98%);
+  --axis-text:            hsl(210, 25%, 15%);
 
-  /* Bolhas */
-  --axis-bubble-user: hsl(152, 69%, 40%);
-  --axis-bubble-user-text: #ffffff;
-  --axis-bubble-ai: hsl(210, 10%, 93%);
-  --axis-bubble-ai-text: hsl(210, 25%, 15%);
+  --axis-bubble-user-bg:  hsla(152, 69%, 40%, 0.08);
+  --axis-bubble-user-txt: hsl(210, 25%, 15%);
+  --axis-bubble-ai-bg:    hsl(210, 10%, 95%);
+  --axis-bubble-ai-txt:   hsl(210, 25%, 15%);
 
-  /* Funcional */
-  --axis-danger: hsl(0, 72%, 51%);
-  --axis-warning: hsl(35, 92%, 50%);
-  --axis-info: hsl(210, 80%, 52%);
-  --axis-success: hsl(152, 69%, 40%);
-
-  /* Raios */
-  --axis-radius-sm: 6px;
-  --axis-radius-md: 8px;
-  --axis-radius-lg: 12px;
-  --axis-radius-xl: 16px;
+  --axis-danger:          hsl(0, 72%, 51%);
+  --axis-r-sm:            6px;
+  --axis-r-md:            8px;
+  --axis-r-lg:            12px;
+  --axis-r-xl:            16px;
 }
 
-/* ---------- Tema escuro ---------- */
 .dark {
-  --axis-sidebar-bg: hsl(152, 25%, 12%);
-  --axis-sidebar-bg-hover: hsl(152, 25%, 16%);
-  --axis-sidebar-text: hsl(152, 15%, 80%);
-  --axis-sidebar-text-muted: hsl(152, 10%, 50%);
+  --axis-sidebar-bg:      hsl(152, 25%, 12%);
+  --axis-sidebar-hover:   hsl(152, 25%, 16%);
+  --axis-sidebar-active:  hsl(152, 25%, 20%);
+  --axis-sidebar-text:    hsl(152, 15%, 80%);
+  --axis-sidebar-muted:   hsl(152, 10%, 50%);
+  --axis-sidebar-border:  hsla(152, 20%, 20%, 0.5);
 
-  --axis-canvas: hsl(210, 20%, 10%);
-  --axis-text: hsl(152, 10%, 88%);
+  --axis-canvas:          hsl(210, 15%, 10%);
+  --axis-text:            hsl(152, 10%, 88%);
 
-  --axis-bubble-user: hsl(152, 69%, 42%);
-  --axis-bubble-ai: hsl(210, 8%, 24%);
-  --axis-bubble-ai-text: hsl(0, 0%, 92%);
+  --axis-bubble-user-bg:  hsla(152, 69%, 42%, 0.12);
+  --axis-bubble-user-txt: hsl(0, 0%, 92%);
+  --axis-bubble-ai-bg:    hsl(210, 8%, 20%);
+  --axis-bubble-ai-txt:   hsl(0, 0%, 90%);
 }
 
 /* ==========================================================
-   TIPOGRAFIA — Inter como fonte global
+   TIPOGRAFIA
    ========================================================== */
-body,
-html,
-* {
+body, html, * {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 /* ==========================================================
-   SIDEBAR — fundo verde-petróleo escuro
-   (Aplica SOMENTE à sidebar/nav, não a inputs/formulários)
+   BLOCO 1 - SIDEBAR
    ========================================================== */
-nav[aria-label],
-[data-testid="nav-panel"],
-#sidebar,
-.nav-container {
+
+/* 1a. Icon strip - contem botao close/open */
+div:has(> button[data-testid="close-sidebar-button"]),
+div:has(> button[data-testid="open-sidebar-button"]) {
   background-color: var(--axis-sidebar-bg) !important;
-  color: var(--axis-sidebar-text) !important;
+  border-right-color: var(--axis-sidebar-border) !important;
+  --text-primary:        var(--axis-sidebar-text);
+  --text-secondary:      var(--axis-sidebar-muted);
+  --surface-active-alt:  var(--axis-sidebar-active);
+  --surface-hover:       var(--axis-sidebar-hover);
+  --surface-active:      var(--axis-sidebar-active);
+  --border-light:        var(--axis-sidebar-border);
 }
 
-/* Hover dos itens da sidebar */
-nav a:hover,
-[data-testid="nav-panel"] a:hover,
-aside button:hover,
-aside a:hover {
-  background-color: hsla(152, 30%, 40%, 0.12) !important;
-  transition: background-color 150ms ease;
+/* 1b. Painel de navegacao (nav irmao do icon strip) */
+div:has(> div > button[data-testid="close-sidebar-button"]) > nav,
+div:has(> div > button[data-testid="open-sidebar-button"]) > nav {
+  background-color: var(--axis-sidebar-bg) !important;
+  --text-primary:        var(--axis-sidebar-text);
+  --text-secondary:      var(--axis-sidebar-muted);
+  --surface-active-alt:  var(--axis-sidebar-active);
+  --surface-hover:       var(--axis-sidebar-hover);
+  --surface-active:      var(--axis-sidebar-active);
+  --border-light:        var(--axis-sidebar-border);
 }
 
-.dark nav a:hover,
-.dark [data-testid="nav-panel"] a:hover,
-.dark aside button:hover,
-.dark aside a:hover {
-  background-color: var(--axis-sidebar-bg-hover) !important;
+/* 1c. Botao "Novo Chat" - verde primario solido */
+a[data-testid="new-chat-button"] {
+  background-color: var(--axis-primary-hex) !important;
+  color: #ffffff !important;
+}
+a[data-testid="new-chat-button"]:hover {
+  background-color: var(--axis-primary-hex) !important;
+  opacity: 0.85;
+}
+a[data-testid="new-chat-button"] svg {
+  color: #ffffff !important;
 }
 
-/* Conversa ativa na sidebar */
-nav a[class*="bg-"],
-[data-testid="conversation-turn-"].active,
-a[class*="active"] {
-  background-color: hsla(152, 69%, 40%, 0.15) !important;
+/* 1d. Conversa ativa - accent verde a esquerda */
+div:has(> div > button[data-testid="close-sidebar-button"]) > nav [aria-current="page"],
+div:has(> div > button[data-testid="open-sidebar-button"]) > nav [aria-current="page"] {
   border-left: 3px solid var(--axis-primary-hex) !important;
+  border-radius: 0 var(--axis-r-md) var(--axis-r-md) 0 !important;
 }
 
-/* Labels de seção (CONVERSAS, etc.) */
-nav span[class*="uppercase"],
-aside span[class*="text-xs"] {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--axis-sidebar-text-muted) !important;
+/* 1e. Hover em botoes da sidebar */
+button[data-testid="nav-user"]:hover,
+button[data-testid="close-sidebar-button"]:hover,
+button[data-testid="open-sidebar-button"]:hover {
+  background-color: var(--axis-sidebar-hover) !important;
 }
 
-/* ==========================================================
-   BOTÃO "NOVO CHAT" — verde primário sólido
-   ========================================================== */
-a[data-testid="nav-new-chat-button"],
-button[data-testid="nav-new-chat-button"],
-nav a[class*="new-chat"],
-nav button[class*="new-chat"] {
-  background-color: var(--axis-primary-hex) !important;
-  color: #ffffff !important;
-  border-radius: var(--axis-radius-md) !important;
-  font-weight: 600 !important;
-  transition: opacity 150ms ease;
+/* 1f. Labels de secao */
+div[role="region"] [class*="uppercase"],
+div[role="region"] p[class*="text-xs"][class*="font-semibold"] {
+  color: var(--axis-sidebar-muted) !important;
+  letter-spacing: 0.06em;
+  font-size: 11px !important;
 }
 
-a[data-testid="nav-new-chat-button"]:hover,
-button[data-testid="nav-new-chat-button"]:hover {
-  opacity: 0.9;
+/* 1g. Scrollbar fina na sidebar */
+div:has(> div > button[data-testid="close-sidebar-button"]) ::-webkit-scrollbar,
+div:has(> div > button[data-testid="open-sidebar-button"]) ::-webkit-scrollbar {
+  width: 3px;
 }
 
 /* ==========================================================
-   ÁREA DE CHAT — fundo quase-branco / escuro
+   BLOCO 4 - TOPBAR / HEADER
    ========================================================== */
-main,
-[role="main"],
-.chat-container,
-div[class*="conversation-"] {
-  background-color: var(--axis-canvas) !important;
+
+/* Remove gradiente, usa fundo solido + borda */
+.bg-gradient-to-b.from-presentation.to-transparent {
+  background: white !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--gray-200) !important;
+  backdrop-filter: none !important;
+}
+
+.dark .bg-gradient-to-b.from-presentation.to-transparent {
+  background: var(--gray-800) !important;
+  background-image: none !important;
+  border-bottom-color: var(--gray-700) !important;
+}
+
+/* Model selector - borda sutil + radius */
+button[id*="endpoint-menu"],
+button[id*="model-select"],
+[class*="ModelSelector"] > button:first-child {
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--axis-r-md) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
 }
 
 /* ==========================================================
-   BOLHAS DE MENSAGEM
+   BLOCO 3 - BOLHAS DE MENSAGEM
    ========================================================== */
 
-/* Mensagem do usuário — transparente */
-[data-testid*="user-message"],
-div[class*="agent-turn"] div[class*="user"] > div,
-.markdown.user-message,
-div[class*="bg-"] div[class*="request-"] {
+/* Avatar das mensagens */
+.message-render > div > div.flex.h-6.w-6,
+.message-render > div > div > div.flex.h-6.w-6 {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+}
+
+/* Bolha do usuario - fundo verde muito sutil */
+.message-render .user-turn > div.relative.flex.flex-col {
+  background-color: var(--axis-bubble-user-bg) !important;
+  border-radius: var(--axis-r-lg) var(--axis-r-lg) var(--axis-r-sm) var(--axis-r-lg) !important;
+  padding: 10px 14px !important;
+  color: var(--axis-bubble-user-txt) !important;
+  max-width: 82% !important;
+  margin-left: auto;
+}
+
+/* Bolha da IA - sem fundo (texto fluido) */
+.message-render .agent-turn > div.relative.flex.flex-col {
   background-color: transparent !important;
-  color: var(--axis-text) !important;
-  border-radius: var(--axis-radius-lg) !important;
+  border-radius: 0 !important;
+  padding-top: 2px;
 }
 
-/* Mensagem da IA — transparente */
-[data-testid*="ai-message"],
-div[class*="agent-turn"] div[class*="assistant"] > div,
-.markdown:not(.user-message),
-div[class*="bg-"] div[class*="response-"] {
-  background-color: transparent !important;
-  color: var(--axis-text) !important;
-  border-radius: var(--axis-radius-lg) !important;
-}
-
-.dark [data-testid*="user-message"],
-.dark div[class*="agent-turn"] div[class*="user"] > div,
-.dark .markdown.user-message,
-.dark div[class*="bg-"] div[class*="request-"] {
-  background-color: transparent !important;
-  color: var(--axis-text) !important;
-}
-
-.dark [data-testid*="ai-message"],
-.dark div[class*="agent-turn"] div[class*="assistant"] > div,
-.dark .markdown:not(.user-message),
-.dark div[class*="bg-"] div[class*="response-"] {
-  background-color: transparent !important;
-  color: var(--axis-text) !important;
+/* Espacamento entre mensagens */
+.message-render {
+  margin-bottom: 4px !important;
 }
 
 /* ==========================================================
-   COMPOSER (campo de input)
+   BLOCO 2 - LANDING PAGE
    ========================================================== */
-textarea[data-testid="text-input"],
-form[class*="composer"] textarea,
-div[class*="composer"] textarea {
-  border-radius: var(--axis-radius-lg) !important;
-  font-size: 14px !important;
+
+/* Logo maior na landing */
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center .relative.size-10 {
+  width: 3.5rem !important;
+  height: 3.5rem !important;
 }
 
-textarea:focus,
-form[class*="composer"] textarea:focus {
-  border-color: var(--axis-primary-hex) !important;
-  box-shadow: none !important;
-  outline: none !important;
+/* Sombra sutil no composer */
+form:has(> div > div > div[class*="rounded-t-3xl"]) {
+  filter: drop-shadow(0 2px 10px hsla(210, 15%, 20%, 0.06));
+}
+.dark form:has(> div > div > div[class*="rounded-t-3xl"]) {
+  filter: drop-shadow(0 2px 12px hsla(0, 0%, 0%, 0.18));
 }
 
-/* Container do composer — evita corte do border-radius */
-form[class*="composer"],
-div[class*="composer"],
-div[class*="input-area"],
-fieldset {
-  overflow: visible !important;
-  border-radius: var(--axis-radius-lg) !important;
+/* Container interno do composer */
+div[class*="rounded-t-3xl"][class*="border"],
+div[class*="rounded-3xl"][class*="border"] {
+  border-color: var(--border-light) !important;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+div[class*="rounded-t-3xl"][class*="border"]:focus-within,
+div[class*="rounded-3xl"][class*="border"]:focus-within {
+  border-color: hsla(152, 69%, 40%, 0.4) !important;
+  box-shadow: 0 0 0 3px hsla(152, 69%, 40%, 0.06) !important;
+}
+
+/* Placeholder do textarea */
+form textarea::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.75;
 }
 
 /* ==========================================================
-   BOTÃO ENVIAR — verde
+   BLOCO 5 - CARDS DE AGENTES (Marketplace)
    ========================================================== */
-button[data-testid="send-button"],
-form button[type="submit"] {
-  background-color: var(--axis-primary-hex) !important;
-  color: #ffffff !important;
-  border-radius: var(--axis-radius-md) !important;
-  transition: opacity 150ms ease;
-}
 
-button[data-testid="send-button"]:hover {
-  opacity: 0.9;
+/* Card: fundo branco, borda sutil, hover shadow */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] {
+  background-color: #ffffff !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--axis-r-lg) !important;
+  transition: box-shadow 150ms ease, border-color 150ms ease, transform 150ms ease !important;
 }
-
-button[data-testid="send-button"]:disabled {
-  opacity: 0.4 !important;
+.dark .group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"] {
+  background-color: var(--gray-800) !important;
+  border-color: var(--gray-700) !important;
 }
-
-/* ==========================================================
-   CARDS DE AGENTE — borda sutil, sombra no hover
-   ========================================================== */
-div[class*="agent-card"],
-div[class*="card"] {
-  border-radius: var(--axis-radius-lg) !important;
-  border: 1px solid hsl(210, 15%, 88%) !important;
-  transition: box-shadow 150ms ease, transform 150ms ease;
-}
-
-div[class*="agent-card"]:hover,
-div[class*="card"]:hover {
-  box-shadow: 0 4px 12px hsla(210, 15%, 40%, 0.1) !important;
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl[role="button"]:hover {
+  box-shadow: 0 4px 14px hsla(152, 40%, 20%, 0.12) !important;
+  border-color: hsla(152, 69%, 40%, 0.3) !important;
   transform: translateY(-1px);
 }
 
-.dark div[class*="agent-card"],
-.dark div[class*="card"] {
-  border-color: hsl(210, 10%, 25%) !important;
+/* Badge de categoria - verde sutil */
+.group.relative.flex.gap-5.overflow-hidden.rounded-xl .rounded-md.bg-surface-hover.text-xs {
+  background-color: hsla(152, 69%, 40%, 0.08) !important;
+  color: hsl(152, 60%, 32%) !important;
+}
+.dark .group.relative.flex.gap-5.overflow-hidden.rounded-xl .rounded-md.bg-surface-hover.text-xs {
+  background-color: hsla(152, 69%, 40%, 0.12) !important;
+  color: hsl(152, 60%, 55%) !important;
 }
 
 /* ==========================================================
-   FOCO DE TECLADO — ring verde
+   BOTAO ENVIAR
+   ========================================================== */
+button[data-testid="send-button"] {
+  background-color: var(--axis-primary-hex) !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  transition: opacity 150ms ease !important;
+}
+button[data-testid="send-button"]:hover:not(:disabled) {
+  opacity: 0.88 !important;
+  background-color: var(--axis-primary-hex) !important;
+}
+button[data-testid="send-button"]:disabled {
+  opacity: 0.35 !important;
+  background-color: var(--text-secondary) !important;
+}
+button[data-testid="send-button"] svg {
+  color: #ffffff !important;
+}
+
+/* ==========================================================
+   MENUS CONTEXTUAIS / POPOVERS
+   ========================================================== */
+[role="menu"],
+[data-radix-popper-content-wrapper] > div,
+.popover-ui,
+.account-settings-popover {
+  border-radius: var(--axis-r-md) !important;
+  box-shadow: 0 4px 18px hsla(210, 15%, 20%, 0.12) !important;
+  border: 1px solid var(--border-light) !important;
+}
+.dark [role="menu"],
+.dark [data-radix-popper-content-wrapper] > div,
+.dark .popover-ui,
+.dark .account-settings-popover {
+  border-color: var(--gray-700) !important;
+  box-shadow: 0 4px 22px hsla(0, 0%, 0%, 0.35) !important;
+}
+
+/* Item destrutivo */
+[role="menuitem"][class*="destructive"],
+.select-item[class*="destructive"] {
+  color: var(--axis-danger) !important;
+}
+
+/* ==========================================================
+   FOCO
    ========================================================== */
 *:focus-visible {
   outline: 2px solid var(--axis-primary-hex) !important;
@@ -256,112 +314,32 @@ div[class*="card"]:hover {
 }
 
 /* ==========================================================
-   LOADING (três pontos) — animação pulsante verde
+   LOADING (tres pontos)
    ========================================================== */
 @keyframes axisPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 1; }
 }
-
 div[class*="loading"] span,
 div[class*="typing"] span,
 .dot-pulse {
   background-color: var(--axis-primary-hex) !important;
   animation: axisPulse 1.4s ease-in-out infinite !important;
 }
-
 div[class*="loading"] span:nth-child(2),
-div[class*="typing"] span:nth-child(2) {
-  animation-delay: 0.2s !important;
-}
-
+div[class*="typing"] span:nth-child(2) { animation-delay: 0.2s !important; }
 div[class*="loading"] span:nth-child(3),
-div[class*="typing"] span:nth-child(3) {
-  animation-delay: 0.4s !important;
-}
+div[class*="typing"] span:nth-child(3) { animation-delay: 0.4s !important; }
 
 /* ==========================================================
    BADGES DE STATUS
    ========================================================== */
-span[class*="connected"],
-span[class*="success"] {
-  color: var(--axis-primary-hex) !important;
-}
-
-span[class*="warning"],
-span[class*="ask"] {
-  color: hsl(35, 92%, 50%) !important;
-}
-
-span[class*="error"],
-span[class*="blocked"],
-span[class*="destructive"] {
-  color: var(--axis-danger) !important;
-}
+span[class*="connected"], span[class*="success"] { color: var(--axis-primary-hex) !important; }
+span[class*="warning"],   span[class*="ask"]     { color: hsl(35, 92%, 50%) !important; }
+span[class*="error"],     span[class*="blocked"] { color: var(--axis-danger) !important; }
 
 /* ==========================================================
-   MICROINTERAÇÕES — transições suaves globais
-   ========================================================== */
-button,
-a,
-input,
-textarea,
-select {
-  transition: background-color 150ms ease,
-              color 150ms ease,
-              opacity 150ms ease,
-              border-color 150ms ease !important;
-}
-
-/* ==========================================================
-   MENUS CONTEXTUAIS / POPOVERS
-   ========================================================== */
-[role="menu"],
-[data-radix-popper-content-wrapper] div,
-div[class*="popover"] {
-  border-radius: var(--axis-radius-md) !important;
-  box-shadow: 0 4px 16px hsla(210, 15%, 20%, 0.12) !important;
-  border: 1px solid hsl(210, 15%, 88%) !important;
-}
-
-.dark [role="menu"],
-.dark [data-radix-popper-content-wrapper] div,
-.dark div[class*="popover"] {
-  border-color: hsl(210, 10%, 25%) !important;
-  box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.3) !important;
-}
-
-/* Item destrutivo (Excluir) em vermelho */
-[role="menuitem"][class*="destructive"],
-[role="menuitem"][class*="delete"],
-[role="menuitem"][class*="danger"] {
-  color: var(--axis-danger) !important;
-}
-
-/* ==========================================================
-   TELA DE LOGIN — reforço verde
-   ========================================================== */
-button[class*="social"],
-a[class*="social"] {
-  border-radius: var(--axis-radius-md) !important;
-}
-
-/* ==========================================================
-   LARGURA MÁXIMA DAS MENSAGENS (~768px, bolhas 80%)
-   ========================================================== */
-div[class*="message-content"],
-div[class*="markdown"] {
-  max-width: min(768px, 80%) !important;
-}
-
-/* ==========================================================
-   SIDEBAR — preferir expandida por padrão (tooltip nos ícones)
-   Nota: O LibreChat permite expandir clicando no 1º ícone.
-   Forçar via CSS não é ideal; o estado é salvo no localStorage.
-   ========================================================== */
-
-/* ==========================================================
-   RODAPÉ — ocultar link do LibreChat, manter texto da tradução
+   RODAPE - ocultar link padrao do LibreChat
    ========================================================== */
 a[href*="librechat.ai"],
 a[href*="github.com/danny-avila"] {
@@ -369,21 +347,35 @@ a[href*="github.com/danny-avila"] {
 }
 
 /* ==========================================================
-   SCROLLBAR CUSTOM (sutil)
+   SCROLLBAR CUSTOM
    ========================================================== */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: hsla(152, 20%, 40%, 0.3);
+  background: hsla(152, 20%, 40%, 0.25);
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(152, 20%, 40%, 0.5);
+  background: hsla(152, 20%, 40%, 0.45);
+}
+
+/* ==========================================================
+   MICROINTERACOES
+   ========================================================== */
+button, a, input, textarea, select {
+  transition:
+    background-color 150ms ease,
+    color            150ms ease,
+    opacity          150ms ease,
+    border-color     150ms ease,
+    box-shadow       150ms ease !important;
+}
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+@media (max-width: 768px) {
+  .message-render .user-turn > div.relative.flex.flex-col {
+    max-width: 92% !important;
+  }
 }
